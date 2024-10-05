@@ -4,6 +4,8 @@
 #include "imgui.h"
 #include "Defines.h"
 
+BottomPanel::BottomPanel(SDL_Renderer* renderer) : m_renderer(renderer) { }
+
 void BottomPanel::draw() const {
     ImGui::SetNextWindowPos(ImVec2(0, *m_height - ceil(*m_height / BOTTOM_PANEL_PERCENT)));
     ImGui::SetNextWindowSize(ImVec2(*m_width, ceil(*m_height / BOTTOM_PANEL_PERCENT)));

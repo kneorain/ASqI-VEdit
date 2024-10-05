@@ -184,18 +184,25 @@
     <ClCompile Include="src\SidePanel.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="assets\NeoSansProBlack.OTF" />
-    <Content Include="assets\NeoSansProBlackIt.OTF" />
-    <Content Include="assets\NeoSansProBold.OTF" />
-    <Content Include="assets\NeoSansProBoldIt.OTF" />
-    <Content Include="assets\NeoSansProItalic.OTF" />
-    <Content Include="assets\NeoSansProLight.OTF" />
-    <Content Include="assets\NeoSansProLightIt.OTF" />
-    <Content Include="assets\NeoSansProMedIt.OTF" />
-    <Content Include="assets\NeoSansProMedium.OTF" />
-    <Content Include="assets\NeoSansProRegular.OTF" />
-    <Content Include="assets\NeoSansProUltIt.OTF" />
-    <Content Include="assets\NeoSansProUltra.OTF" />
+    <Content Include="assets\fonts\NeoSansProBlack.OTF" />
+    <Content Include="assets\fonts\NeoSansProBlackIt.OTF" />
+    <Content Include="assets\fonts\NeoSansProBold.OTF" />
+    <Content Include="assets\fonts\NeoSansProBoldIt.OTF" />
+    <Content Include="assets\fonts\NeoSansProItalic.OTF" />
+    <Content Include="assets\fonts\NeoSansProLight.OTF" />
+    <Content Include="assets\fonts\NeoSansProLightIt.OTF" />
+    <Content Include="assets\fonts\NeoSansProMedIt.OTF" />
+    <Content Include="assets\fonts\NeoSansProMedium.OTF" />
+    <Content Include="assets\fonts\NeoSansProRegular.OTF" />
+    <Content Include="assets\fonts\NeoSansProUltIt.OTF" />
+    <Content Include="assets\fonts\NeoSansProUltra.OTF" />
+    <Content Include="assets\nodes\Action_Node.png" />
+    <Content Include="assets\nodes\Dead_Node.png" />
+    <Content Include="assets\nodes\Edge_Group.png" />
+    <Content Include="assets\nodes\External_Node.png" />
+    <Content Include="assets\nodes\Note.png" />
+    <Content Include="assets\nodes\Snek.png" />
+    <Content Include="assets\nodes\Step_Node.png" />
     <Content Include="assets\win_tree.ico" />
     <Content Include="assets\win_tree_big.ico" />
     <Content Include="DLL\SDL2.dll" />

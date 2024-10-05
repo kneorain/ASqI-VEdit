@@ -47,6 +47,9 @@ bool Application::init() {
     SDL_Surface* icon = IMG_Load("./assets/win_tree_big.ico");
     SDL_SetWindowIcon(m_window, icon);
 
+    // Smallest allowable window size
+    SDL_SetWindowMinimumSize(m_window, 800, 480);
+
     // Initialize SDL renderer
     m_renderer = SDL_CreateRenderer( m_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
     if (!m_renderer) {
@@ -65,21 +68,23 @@ bool Application::init() {
 
     // Setup IO and load fonts
     m_io = &ImGui::GetIO();
-    ImFont* mainFont = m_io->Fonts->AddFontFromFileTTF("assets/NeoSansProLight.OTF", 24.0f);
+    ImFont* mainFont = m_io->Fonts->AddFontFromFileTTF("assets/fonts/NeoSansProLight.OTF", 24.0f);
     m_io->FontDefault = mainFont;
 
     // Setup custom window style
     ImGuiStyle& style = ImGui::GetStyle();
     style.Colors[ImGuiCol_WindowBg] = ImVec4(0.17647058823529413f, 0.16470588235294117f, 0.1803921568627451f, 1.0f);
     
-    // Initialize layout & size references
+    // Initialize layout, size references, and drag targets
     m_mainViewport = new MainViewport(m_renderer);
     m_mainViewport->registerSize(&m_windWidth, &m_windHeight);
+    m_mainViewport->setDragTarget(&m_dragTarget);
     
-    m_sidePanel = new SidePanel();
+    m_sidePanel = new SidePanel(m_renderer);
     m_sidePanel->registerSize(&m_windWidth, &m_windHeight);
+    m_sidePanel->setDragTarget(&m_dragTarget);
     
-    m_bottomPanel = new BottomPanel();
+    m_bottomPanel = new BottomPanel(m_renderer);
     m_bottomPanel->registerSize(&m_windWidth, &m_windHeight);
     
     return true;

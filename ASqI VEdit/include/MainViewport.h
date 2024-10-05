@@ -17,8 +17,10 @@ public:
     void draw() override;
     void resize() override;
 
+    void setDragTarget(std::string* dragTarget);
+
 private:
-    
+    std::string* m_dragTarget;
 };
 
 #endif

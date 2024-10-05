@@ -28,6 +28,8 @@ private:
     SidePanel* m_sidePanel;
     BottomPanel* m_bottomPanel;
 
+    std::string m_dragTarget;
+
     bool init();
     void kill() const;
 
