@@ -7,10 +7,16 @@
 
 #include <iostream>
 
+#include "DraggableNode.h"
+
 Application::Application() {
     if (!init()) {
         (void)fprintf(stderr, "Initialization failed, aborting!\n");
     }
+
+    initViewportUI();
+    initBottomPanelUI();
+    initSidePanelUI();
 }
 
 
@@ -26,40 +32,55 @@ bool Application::init() {
     } 
 
     // Create SDL window
-    window = SDL_CreateWindow( "A²ᵢ VEdit", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1000, 600, SDL_WINDOW_SHOWN );
-    if (!window) {
+    m_window = SDL_CreateWindow(
+        "A²ᵢ VEdit",
+        SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, m_windWidth, m_windHeight,
+        SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_RESIZABLE
+        );
+    
+    if (!m_window) {
         (void)fprintf(stderr, "Error creating window: %s\n", SDL_GetError());
         return false;
     }
 
     // Set window icon
     SDL_Surface* icon = IMG_Load("./assets/win_tree_big.ico");
-    SDL_SetWindowIcon(window, icon);
+    SDL_SetWindowIcon(m_window, icon);
 
     // Initialize SDL renderer
-    renderer = SDL_CreateRenderer( window, -1, SDL_RENDERER_ACCELERATED );
-    if (!renderer) {
+    m_renderer = SDL_CreateRenderer( m_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
+    if (!m_renderer) {
         (void)fprintf(stderr, "Error creating renderer: %s\n", SDL_GetError());
         return false;
     }
 
-    // Initialize ImGui
+     // Initialize ImGui
     IMGUI_CHECKVERSION();
-    context = ImGui::CreateContext();
-    ImGui::SetCurrentContext(context);
+    m_context = ImGui::CreateContext();
+    ImGui::SetCurrentContext(m_context);
 
     // Initialize ImGui for SDL and OpenGL
-    ImGui_ImplSDL2_InitForSDLRenderer(window, renderer);
-    ImGui_ImplSDLRenderer2_Init(renderer);
+    ImGui_ImplSDL2_InitForSDLRenderer(m_window, m_renderer);
+    ImGui_ImplSDLRenderer2_Init(m_renderer);
 
-    // Setup ImGui with SDL and style
-    io = &ImGui::GetIO();
-    ImGui::StyleColorsDark();
+    // Setup IO and load fonts
+    m_io = &ImGui::GetIO();
+    ImFont* mainFont = m_io->Fonts->AddFontFromFileTTF("assets/NeoSansProLight.OTF", 24.0f);
+    m_io->FontDefault = mainFont;
+
+    // Setup custom window style
+    ImGuiStyle& style = ImGui::GetStyle();
+    style.Colors[ImGuiCol_WindowBg] = ImVec4(0.17647058823529413f, 0.16470588235294117f, 0.1803921568627451f, 1.0f);
     
-    // Initialize the layout
-    mainViewport = new MainViewport(renderer);
-    sidePanel = new SidePanel(renderer);
-    bottomPanel = new BottomPanel(renderer);
+    // Initialize layout & size references
+    m_mainViewport = new MainViewport(m_renderer);
+    m_mainViewport->registerSize(&m_windWidth, &m_windHeight);
+    
+    m_sidePanel = new SidePanel();
+    m_sidePanel->registerSize(&m_windWidth, &m_windHeight);
+    
+    m_bottomPanel = new BottomPanel();
+    m_bottomPanel->registerSize(&m_windWidth, &m_windHeight);
     
     return true;
 }
@@ -68,9 +89,9 @@ bool Application::init() {
 /**
  * \brief Kills the main process and exits the application
  */
-void Application::kill() {
-    SDL_DestroyRenderer( renderer );
-    SDL_DestroyWindow( window );
+void Application::kill() const {
+    SDL_DestroyRenderer( m_renderer );
+    SDL_DestroyWindow( m_window );
     SDL_Quit();
     exit(1);
 }
@@ -79,43 +100,55 @@ void Application::run() {
     bool running = true;
     SDL_Event event;
 
+    // Main application loop
     while (running) {
         ImGui_ImplSDLRenderer2_NewFrame();
         ImGui_ImplSDL2_NewFrame();
         ImGui::NewFrame();
-        
+
+        // Event polling and handling
         while (SDL_PollEvent(&event) != 0) {
             ImGui_ImplSDL2_ProcessEvent(&event);
-            
-            if (event.type == SDL_QUIT) {
-                running = false;
+
+            switch (event.type) {
+                case SDL_QUIT:
+                    running = false;
+                    break;
+
+                // Update window size references and call resize on layout elements
+                case SDL_WINDOWEVENT:
+                    if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
+                        m_windWidth = event.window.data1;
+                        m_windHeight = event.window.data2;
+                        
+                        m_mainViewport->resize();
+                        m_sidePanel->resize();
+                        m_bottomPanel->resize();
+                    }                
+                default:
+                    break;
             }
         }
 
         int width, height;
-        SDL_GetWindowSize(window, &width, &height);
-        io->DisplaySize = ImVec2((float)width, (float)height);
+        SDL_GetWindowSize(m_window, &width, &height);
+        m_io->DisplaySize = ImVec2((float)width, (float)height);
 
         // Clear screen
-        SDL_SetRenderDrawColor(renderer, 42, 42, 42, 255);
-        SDL_RenderClear(renderer);
+        SDL_SetRenderDrawColor(m_renderer, 42, 42, 42, 255);
+        SDL_RenderClear(m_renderer);
 
-        // Main layout displays
-        mainViewport->draw();
-        sidePanel->draw();
-        bottomPanel->draw();
+        // Layout rendering
+        m_mainViewport->draw();
+        m_sidePanel->draw();
+        m_bottomPanel->draw();
 
-        // Temporary ImGui rendering, to be moved into the classes
-        ImGui::Begin("Control Panel");
-        ImGui::Text("Hello, ImGui!");
-        ImGui::End();
-
-        // Render ImGui
+        // Render ImGui Elements
         ImGui::Render();
-        ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData(), renderer);
+        ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData(), m_renderer);
 
         // Present final image
-        SDL_RenderPresent(renderer);
+        SDL_RenderPresent(m_renderer);
     }
 
     // Cleanup ImGui resources
@@ -125,3 +158,18 @@ void Application::run() {
 
     kill();
 }
+
+void Application::initViewportUI() {
+    
+}
+
+void Application::initBottomPanelUI() {
+    SDL_Surface* nodeIcon = IMG_Load("assets/win_tree.ico");
+    m_bottomPanel->add("TestNode", new DraggableNode(nodeIcon, { 20, 20 }));
+}
+
+void Application::initSidePanelUI() {
+    
+}
+
+

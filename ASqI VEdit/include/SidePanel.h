@@ -1,16 +1,22 @@
 ﻿#ifndef _SIDE_PANEL_H
 #define _SIDE_PANEL_H
 
-#include <Panel.h>
+#include <string>
+#include <unordered_map>
 
-class SidePanel : public Panel {
+#include "Drawable.h"
+#include "DrawableContainer.h"
+#include "Resizeable.h"
+
+class SidePanel : public Resizeable, public DrawableContainer {
 public:
-    SidePanel(SDL_Renderer* renderer) 
-        : Panel(renderer, {800, 0, 200, 500}, {0, 255, 0, 255}) {}
+    SidePanel() = default;
+    
+    void draw() const;
+    void resize() override;
 
-    void draw() override {
-        Panel::draw();
-    }
+private:
+    std::unordered_map<std::string, Drawable> m_objects;
 };
 
 #endif

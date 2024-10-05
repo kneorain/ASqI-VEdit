@@ -3,14 +3,22 @@
 
 #include <Panel.h>
 
-class MainViewport : public Panel {
+#include "Resizeable.h"
+
+class MainViewport : public Panel, public Resizeable {
 public:
     MainViewport(SDL_Renderer* renderer) 
-        : Panel(renderer, {0, 0, 800, 500}, {255, 0, 0, 255}) { }
+     : Panel(renderer,
+         {0, 0, 1150, 700},
+         {77, 77, 77, 255}
+            )
+    { }
 
-    void draw() override {
-        Panel::draw();
-    }
+    void draw() override;
+    void resize() override;
+
+private:
+    
 };
 
 #endif

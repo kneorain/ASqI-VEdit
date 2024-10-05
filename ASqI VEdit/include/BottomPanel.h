@@ -1,18 +1,15 @@
 ﻿#ifndef _BOTTOM_PANEL_H
 #define _BOTTOM_PANEL_H
 
-#include <Panel.h>
+#include "DrawableContainer.h"
+#include "Resizeable.h"
 
-class BottomPanel : public Panel {
+class BottomPanel : public Resizeable, public DrawableContainer {
 public:
-    BottomPanel(SDL_Renderer* renderer) 
-        : Panel(renderer, {0, 500, 1000, 100}, {0, 0, 255, 255}) {} // Blue color
-
-    void draw() override {
-        // Custom drawing code for the bottom panel
-        Panel::draw();
-    }
+    BottomPanel() = default;
+    
+    void draw() const;
+    void resize() override;
 };
-
 
 #endif

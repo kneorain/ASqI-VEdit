@@ -15,18 +15,25 @@ public:
     void run();
 
 private:
-    SDL_Window* window;
-    SDL_Renderer* renderer;
-    
-    ImGuiIO* io;
-    ImGuiContext* context;
+    SDL_Window* m_window;
+    SDL_Renderer* m_renderer;
 
-    MainViewport* mainViewport;
-    SidePanel* sidePanel;
-    BottomPanel* bottomPanel;
+    int m_windWidth = 1500;
+    int m_windHeight = 900;
+    
+    ImGuiIO* m_io;
+    ImGuiContext* m_context;
+
+    MainViewport* m_mainViewport;
+    SidePanel* m_sidePanel;
+    BottomPanel* m_bottomPanel;
 
     bool init();
-    void kill();
+    void kill() const;
+
+    void initViewportUI();
+    void initSidePanelUI();
+    void initBottomPanelUI();
 };
 
 #endif

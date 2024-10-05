@@ -176,13 +176,28 @@
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\BottomPanel.cpp" />
+    <ClCompile Include="src\DraggableNode.cpp" />
+    <ClCompile Include="src\DrawableConatiner.cpp" />
     <ClCompile Include="src\MainViewport.cpp" />
-    <ClCompile Include="src\SiedPanel.cpp" />
+    <ClCompile Include="src\Panel.cpp" />
+    <ClCompile Include="src\Resizeable.cpp" />
+    <ClCompile Include="src\SidePanel.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="assets\" />
-  </ItemGroup>
-  <ItemGroup>
+    <Content Include="assets\NeoSansProBlack.OTF" />
+    <Content Include="assets\NeoSansProBlackIt.OTF" />
+    <Content Include="assets\NeoSansProBold.OTF" />
+    <Content Include="assets\NeoSansProBoldIt.OTF" />
+    <Content Include="assets\NeoSansProItalic.OTF" />
+    <Content Include="assets\NeoSansProLight.OTF" />
+    <Content Include="assets\NeoSansProLightIt.OTF" />
+    <Content Include="assets\NeoSansProMedIt.OTF" />
+    <Content Include="assets\NeoSansProMedium.OTF" />
+    <Content Include="assets\NeoSansProRegular.OTF" />
+    <Content Include="assets\NeoSansProUltIt.OTF" />
+    <Content Include="assets\NeoSansProUltra.OTF" />
+    <Content Include="assets\win_tree.ico" />
+    <Content Include="assets\win_tree_big.ico" />
     <Content Include="DLL\SDL2.dll" />
     <Content Include="DLL\SDL2_image.dll" />
     <Content Include="DLL\SDL2_ttf.dll" />
@@ -198,9 +213,15 @@
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="include\Application.h" />
     <ClInclude Include="include\BottomPanel.h" />
+    <ClInclude Include="include\Defines.h" />
+    <ClInclude Include="include\DraggableNode.h" />
+    <ClInclude Include="include\Drawable.h" />
+    <ClInclude Include="include\DrawableContainer.h" />
     <ClInclude Include="include\MainViewport.h" />
     <ClInclude Include="include\Panel.h" />
+    <ClInclude Include="include\Resizeable.h" />
     <ClInclude Include="include\SidePanel.h" />
+    <ClInclude Include="include\Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
